@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  php-fpm:
+    build:
+      context: ./deploy/fpm
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "9000:9000"
+
+  web:
+    image: nginx:alpine
+    volumes:
+      - ./src:/var/www/html
+      - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8019:80"
+    depends_on:
+      - php-fpm
+
+  franken-php:
+    build:
+      context: ./deploy/franken-php
+    volumes:
+      - ./src:/app/public
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    environment:
+      - CADDY_DEBUG=debug
+      - DEBUG=debug
+      # - FRANKENPHP_CONFIG=worker /app/public/index.php
+    ports:
+      - 8020:80
