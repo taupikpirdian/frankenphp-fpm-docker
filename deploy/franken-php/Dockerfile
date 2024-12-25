@@ -1,17 +1,14 @@
 FROM dunglas/frankenphp
 
-# Or developement:
-RUN cp $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
+# Be sure to replace "your-domain-name.example.com" by your domain name
+# ENV SERVER_NAME=your-domain-name.example.com
+# If you want to disable HTTPS, use this value instead:
+#ENV SERVER_NAME=:80
 
-WORKDIR /app/public
-COPY . /app/public
-COPY Caddyfile /etc/caddy/Caddyfile
+# Enable PHP production settings
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-# FROM dunglas/frankenphp:1.0.0-beta.2-bookworm
-
-# RUN echo "variables_order = \"EGPCS\"" >> $PHP_INI_DIR/conf.d/990-php.ini
-
-# WORKDIR /app/public
-
-# COPY . /app/public
-# COPY Caddyfile /etc/caddy/Caddyfile
+# Copy the PHP files of your project in the public directory
+COPY /src/index.php /app/public
+# If you use Symfony or Laravel, you need to copy the whole project instead:
+#COPY . /app

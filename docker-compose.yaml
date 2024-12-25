@@ -20,13 +20,17 @@ services:
 
   franken-php:
     build:
-      context: ./deploy/franken-php
-    volumes:
-      - ./src:/app/public
-      - ./Caddyfile:/etc/caddy/Caddyfile
-    environment:
-      - CADDY_DEBUG=debug
-      - DEBUG=debug
-      # - FRANKENPHP_CONFIG=worker /app/public/index.php
+      context: .  # The context is now the root of the project
+      dockerfile: ./deploy/franken-php/Dockerfile
+    restart: always
     ports:
-      - 8020:80
+      - "8020:80" # HTTP
+      - "443:443" # HTTPS
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+# Volumes needed for Caddy certificates and configuration
+volumes:
+  caddy_data:
+  caddy_config:
