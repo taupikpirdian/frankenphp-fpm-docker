@@ -19,3 +19,7 @@ Simple Rest API use php and running on FrankenPhp and Php-fpm use Docker. The ap
 - 
 reference:
 https://leetcode.com/problems/container-with-most-water/description/
+
+## TODO
+31-12-2024
+- config nginx concurent connection more than 1k
