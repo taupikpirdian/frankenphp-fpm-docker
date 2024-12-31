@@ -1,14 +1,11 @@
 FROM dunglas/frankenphp
 
-# Be sure to replace "your-domain-name.example.com" by your domain name
-# ENV SERVER_NAME=your-domain-name.example.com
-# If you want to disable HTTPS, use this value instead:
-#ENV SERVER_NAME=:80
-
 # Enable PHP production settings
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-# Copy the PHP files of your project in the public directory
-COPY /src/index.php /app/public
-# If you use Symfony or Laravel, you need to copy the whole project instead:
-#COPY . /app
+# Copy aplikasi ke direktori kerja
+WORKDIR /app
+COPY /src/index.php public/
+
+# Set CMD untuk menjalankan server
+CMD ["frankenphp", "php-server", "-r", "/app/public"]
